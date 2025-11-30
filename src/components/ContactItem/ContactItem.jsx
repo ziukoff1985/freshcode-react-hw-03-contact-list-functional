@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import styles from './ContactItem.module.css';
 
 function ContactItem(props) {

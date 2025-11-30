@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import ContactItem from '../ContactItem/ContactItem';
 
 import styles from './ContactList.module.css';
