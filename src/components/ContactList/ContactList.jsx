@@ -38,8 +38,6 @@ function ContactList(props) {
     );
 }
 
-export default ContactList;
-
 ContactList.propTypes = {
     contacts: PropTypes.array,
 };
@@ -47,3 +45,5 @@ ContactList.propTypes = {
 ContactList.defaultProps = {
     contacts: [],
 };
+
+export default ContactList;
