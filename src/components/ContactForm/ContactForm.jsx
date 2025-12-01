@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import styles from './ContactForm.module.css';
+import PropTypes from 'prop-types';
 
 function ContactForm(props) {
     const [contactData, setContactData] = useState({
@@ -138,3 +139,7 @@ function ContactForm(props) {
 }
 
 export default ContactForm;
+
+ContactForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};

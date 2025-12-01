@@ -82,7 +82,7 @@ function App() {
                 <ContactForm
                     key={contactForEdit.id}
                     contactForEdit={contactForEdit}
-                    onSubmit={saveContact}
+                    // onSubmit={saveContact}
                     onDeleteContact={deleteContact}
                 />
             </div>
