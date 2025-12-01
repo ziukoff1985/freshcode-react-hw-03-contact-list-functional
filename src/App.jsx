@@ -6,14 +6,14 @@ import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
 
 function App() {
-    const [contacts, setContacts] = useState(getContactsFromLocalStorage());
+    const [contacts, setContacts] = useState(getDataFromLocalStorage());
     const [contactForEdit, setContactForEdit] = useState(createEmptyContact());
 
     useEffect(() => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
     }, [contacts]);
 
-    function getContactsFromLocalStorage() {
+    function getDataFromLocalStorage() {
         const savedData = JSON.parse(localStorage.getItem('contacts'));
         return savedData ?? [];
     }
@@ -80,6 +80,7 @@ function App() {
                     contactForEdit={contactForEdit}
                 />
                 <ContactForm
+                    key={contactForEdit.id}
                     contactForEdit={contactForEdit}
                     onSubmit={saveContact}
                     onDeleteContact={deleteContact}
