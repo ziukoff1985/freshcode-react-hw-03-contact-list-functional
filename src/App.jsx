@@ -6,8 +6,10 @@ import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
 
 function App() {
-    const [contacts, setContacts] = useState(getDataFromLocalStorage());
-    const [contactForEdit, setContactForEdit] = useState(createEmptyContact());
+    const [contacts, setContacts] = useState(() => getDataFromLocalStorage());
+    const [contactForEdit, setContactForEdit] = useState(() =>
+        createEmptyContact()
+    );
 
     useEffect(() => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -29,11 +31,10 @@ function App() {
     }
 
     function deleteContact(contactId) {
-        const newContacts = contacts.filter(
-            (contact) => contact.id !== contactId
+        setContacts((prevState) =>
+            prevState.filter((contact) => contact.id !== contactId)
         );
         const isContactNowUpdating = contactForEdit.id === contactId;
-        setContacts(newContacts);
         setContactForEdit(
             isContactNowUpdating ? createEmptyContact() : contactForEdit
         );
@@ -56,8 +57,8 @@ function App() {
     }
 
     function createContact(contact) {
-        contact.id = nanoid();
-        setContacts((prevState) => [...prevState, contact]);
+        const newContact = { ...contact, id: nanoid() };
+        setContacts((prevState) => [...prevState, newContact]);
         setContactForEdit(createEmptyContact());
     }
 

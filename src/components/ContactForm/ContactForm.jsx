@@ -1,14 +1,12 @@
 import { useState } from 'react';
-
-import styles from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 
-function ContactForm(props) {
-    const [contactData, setContactData] = useState({
-        ...props.contactForEdit,
-    });
+import styles from './ContactForm.module.css';
 
-    const { onDeleteContact, onSubmit } = props;
+function ContactForm({ contactForEdit, onDeleteContact, onSubmit }) {
+    const [contactData, setContactData] = useState({
+        ...contactForEdit,
+    });
 
     function createEmptyContact() {
         return {
@@ -31,13 +29,13 @@ function ContactForm(props) {
         event.preventDefault();
         onSubmit({ ...contactData });
         if (!contactData.id) {
-            setContactData({ ...createEmptyContact() });
+            setContactData(createEmptyContact());
         }
     }
 
     function onContactDelete() {
-        onDeleteContact(props.contactForEdit.id);
-        setContactData({ ...createEmptyContact() });
+        onDeleteContact(contactForEdit.id);
+        setContactData(createEmptyContact());
     }
 
     function onClearField(event) {
