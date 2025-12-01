@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 
-import styles from './App.module.css';
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
+import styles from './App.module.css';
 
 function App() {
     const [contacts, setContacts] = useState(getContactsFromLocalStorage());
@@ -59,7 +59,6 @@ function App() {
         contact.id = nanoid();
         setContacts((prevState) => [...prevState, contact]);
         setContactForEdit(createEmptyContact());
-        console.log(contacts);
     }
 
     function updateContact(contact) {

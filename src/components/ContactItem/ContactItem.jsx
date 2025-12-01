@@ -2,13 +2,13 @@ import styles from './ContactItem.module.css';
 
 function ContactItem(props) {
     const { contact, contactForEdit, onDeleteContact, onEditContact } = props;
-    const onContactDelete = () => {
+    function onContactDelete() {
         onDeleteContact(contact.id);
-    };
+    }
 
-    const onContactEdit = () => {
+    function onContactEdit() {
         onEditContact(contact);
-    };
+    }
 
     return (
         <li
