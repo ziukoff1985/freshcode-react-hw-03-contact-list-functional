@@ -49,7 +49,7 @@ function App() {
     }
 
     function addNewContact() {
-        setContactForEdit(createEmptyContact());
+        setContactForEdit(createEmptyContact);
     }
 
     function editContact(contact) {
@@ -59,7 +59,7 @@ function App() {
     function createContact(contact) {
         const newContact = { ...contact, id: nanoid() };
         setContacts((prevState) => [...prevState, newContact]);
-        setContactForEdit(createEmptyContact());
+        setContactForEdit(createEmptyContact);
     }
 
     function updateContact(contact) {

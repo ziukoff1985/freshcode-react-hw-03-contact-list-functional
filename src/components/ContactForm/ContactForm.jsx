@@ -29,13 +29,13 @@ function ContactForm({ contactForEdit, onDeleteContact, onSubmit }) {
         event.preventDefault();
         onSubmit({ ...contactData });
         if (!contactData.id) {
-            setContactData(createEmptyContact());
+            setContactData(createEmptyContact);
         }
     }
 
     function onContactDelete() {
         onDeleteContact(contactForEdit.id);
-        setContactData(createEmptyContact());
+        setContactData(createEmptyContact);
     }
 
     function onClearField(event) {
