@@ -22,7 +22,6 @@ function App() {
 
     function createEmptyContact() {
         return {
-            // id: null,
             firstName: '',
             lastName: '',
             email: '',
@@ -36,10 +35,10 @@ function App() {
         );
         const isContactNowUpdating = contactForEdit.id === contactId;
         setContacts(newContacts);
+        saveToLocalStorage(newContacts);
         setContactForEdit(
             isContactNowUpdating ? createEmptyContact() : contactForEdit
         );
-        saveToLocalStorage(newContacts);
     }
 
     function saveContact(contact) {

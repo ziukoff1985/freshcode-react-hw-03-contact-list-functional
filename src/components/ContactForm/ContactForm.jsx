@@ -8,23 +8,12 @@ function ContactForm({ contactForEdit, onDeleteContact, onSubmit }) {
         ...contactForEdit,
     });
 
-    // useEffect(() => {
-    //     console.log('Загальний лог useEffect');
-    //     if (contactForEdit.id !== contactData.id) {
-    //         console.log('Лог якщо contactForEdit.id !== contactData.id');
-    //         setContactData({ ...contactForEdit });
-    //     }
-    // }, [contactForEdit.id]);
-    if (contactForEdit.id !== contactData.id) {
-        console.log('Log in if');
+    useEffect(() => {
         setContactData({ ...contactForEdit });
-    }
-
-    // console.log(contactData);
+    }, [contactForEdit]);
 
     function createEmptyContact() {
         return {
-            // id: null,
             firstName: '',
             lastName: '',
             email: '',
