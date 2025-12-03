@@ -6,23 +6,23 @@ import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
 
 function App() {
-    const [contacts, setContacts] = useState(() => getDataFromLocalStorage());
-    const [contactForEdit, setContactForEdit] = useState(() =>
-        createEmptyContact()
-    );
+    const [contacts, setContacts] = useState([]);
+    const [contactForEdit, setContactForEdit] = useState(createEmptyContact);
 
-    useEffect(() => {
-        localStorage.setItem('contacts', JSON.stringify(contacts));
-    }, [contacts]);
+    useEffect(getDataFromLocalStorage, []);
 
     function getDataFromLocalStorage() {
         const savedData = JSON.parse(localStorage.getItem('contacts'));
-        return savedData ?? [];
+        if (!savedData) {
+            setContacts([]);
+        } else {
+            setContacts([...savedData]);
+        }
     }
 
     function createEmptyContact() {
         return {
-            id: null,
+            // id: null,
             firstName: '',
             lastName: '',
             email: '',
@@ -31,13 +31,15 @@ function App() {
     }
 
     function deleteContact(contactId) {
-        setContacts((prevState) =>
-            prevState.filter((contact) => contact.id !== contactId)
+        const newContacts = contacts.filter(
+            (contact) => contact.id !== contactId
         );
         const isContactNowUpdating = contactForEdit.id === contactId;
+        setContacts(newContacts);
         setContactForEdit(
             isContactNowUpdating ? createEmptyContact() : contactForEdit
         );
+        saveToLocalStorage(newContacts);
     }
 
     function saveContact(contact) {
@@ -57,17 +59,25 @@ function App() {
     }
 
     function createContact(contact) {
-        const newContact = { ...contact, id: nanoid() };
-        setContacts((prevState) => [...prevState, newContact]);
+        contact.id = nanoid();
+        const newContacts = [...contacts, contact];
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
         setContactForEdit(createEmptyContact);
     }
 
     function updateContact(contact) {
-        setContacts((prevState) =>
-            prevState.map((item) => (item.id === contact.id ? contact : item))
+        const newContacts = contacts.map((item) =>
+            item.id === contact.id ? contact : item
         );
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
         setContactForEdit({ ...contact });
     }
+
+    const saveToLocalStorage = (contacts) => {
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+    };
 
     return (
         <>
@@ -81,7 +91,6 @@ function App() {
                     contactForEdit={contactForEdit}
                 />
                 <ContactForm
-                    key={contactForEdit.id}
                     contactForEdit={contactForEdit}
                     onSubmit={saveContact}
                     onDeleteContact={deleteContact}

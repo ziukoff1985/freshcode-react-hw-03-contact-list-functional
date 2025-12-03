@@ -3,15 +3,13 @@ import ContactItem from '../ContactItem/ContactItem';
 
 import styles from './ContactList.module.css';
 
-function ContactList(props) {
-    const {
-        contactForEdit,
-        contacts,
-        onAddNewContact,
-        onDeleteContact,
-        onEditContact,
-    } = props;
-
+function ContactList({
+    contactForEdit,
+    contacts,
+    onAddNewContact,
+    onDeleteContact,
+    onEditContact,
+}) {
     return (
         <div className={styles.contactListWrapper}>
             <ul className={styles.contactList}>

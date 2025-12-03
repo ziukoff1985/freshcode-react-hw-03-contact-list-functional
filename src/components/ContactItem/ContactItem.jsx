@@ -1,7 +1,11 @@
 import styles from './ContactItem.module.css';
 
-function ContactItem(props) {
-    const { contact, contactForEdit, onDeleteContact, onEditContact } = props;
+function ContactItem({
+    contact,
+    contactForEdit,
+    onDeleteContact,
+    onEditContact,
+}) {
     function onContactDelete() {
         onDeleteContact(contact.id);
     }

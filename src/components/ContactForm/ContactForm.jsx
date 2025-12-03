@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './ContactForm.module.css';
@@ -8,8 +8,23 @@ function ContactForm({ contactForEdit, onDeleteContact, onSubmit }) {
         ...contactForEdit,
     });
 
+    // useEffect(() => {
+    //     console.log('Загальний лог useEffect');
+    //     if (contactForEdit.id !== contactData.id) {
+    //         console.log('Лог якщо contactForEdit.id !== contactData.id');
+    //         setContactData({ ...contactForEdit });
+    //     }
+    // }, [contactForEdit.id]);
+    if (contactForEdit.id !== contactData.id) {
+        console.log('Log in if');
+        setContactData({ ...contactForEdit });
+    }
+
+    // console.log(contactData);
+
     function createEmptyContact() {
         return {
+            // id: null,
             firstName: '',
             lastName: '',
             email: '',
@@ -34,7 +49,7 @@ function ContactForm({ contactForEdit, onDeleteContact, onSubmit }) {
     }
 
     function onContactDelete() {
-        onDeleteContact(contactForEdit.id);
+        onDeleteContact(contactData.id);
         setContactData(createEmptyContact);
     }
 
