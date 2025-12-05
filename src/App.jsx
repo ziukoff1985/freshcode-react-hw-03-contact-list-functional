@@ -10,13 +10,15 @@ function App() {
     const [contactForEdit, setContactForEdit] = useState(createEmptyContact);
 
     useEffect(() => {
-        api.get('/').then(({ data }) => {
-            if (!data) {
-                setContacts([]);
-            } else {
-                setContacts([...data]);
-            }
-        });
+        api.get('/')
+            .then(({ data }) => {
+                if (!data) {
+                    setContacts([]);
+                } else {
+                    setContacts([...data]);
+                }
+            })
+            .catch((err) => console.log(err.message));
     }, []);
 
     function createEmptyContact() {
@@ -35,7 +37,7 @@ function App() {
                 setContacts(newContacts);
                 setContactForEdit(createEmptyContact);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err.message));
     }
 
     function updateContact(contact) {
@@ -47,7 +49,7 @@ function App() {
                 setContacts(newContacts);
                 setContactForEdit({ ...contact });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err.message));
     }
 
     function deleteContact(contactId) {
@@ -62,7 +64,7 @@ function App() {
                     isContactNowUpdating ? createEmptyContact() : contactForEdit
                 );
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err.message));
     }
 
     function saveContact(contact) {
