@@ -40,6 +40,33 @@ function App() {
         };
     }
 
+    // function createContact(contact) {
+    //     contact.id = nanoid();
+    //     const newContacts = [...contacts, contact];
+    //     setContacts(newContacts);
+    //     saveToLocalStorage(newContacts);
+    //     setContactForEdit(createEmptyContact);
+    // }
+
+    function createContact(contact) {
+        api.post('/', contact)
+            .then(({ data }) => {
+                const newContacts = [...contacts, data];
+                setContacts(newContacts);
+                setContactForEdit(createEmptyContact);
+            })
+            .catch((err) => console.log(err));
+    }
+
+    function updateContact(contact) {
+        const newContacts = contacts.map((item) =>
+            item.id === contact.id ? contact : item
+        );
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
+        setContactForEdit({ ...contact });
+    }
+
     function deleteContact(contactId) {
         const newContacts = contacts.filter(
             (contact) => contact.id !== contactId
@@ -65,23 +92,6 @@ function App() {
     }
 
     function editContact(contact) {
-        setContactForEdit({ ...contact });
-    }
-
-    function createContact(contact) {
-        contact.id = nanoid();
-        const newContacts = [...contacts, contact];
-        setContacts(newContacts);
-        saveToLocalStorage(newContacts);
-        setContactForEdit(createEmptyContact);
-    }
-
-    function updateContact(contact) {
-        const newContacts = contacts.map((item) =>
-            item.id === contact.id ? contact : item
-        );
-        setContacts(newContacts);
-        saveToLocalStorage(newContacts);
         setContactForEdit({ ...contact });
     }
 
