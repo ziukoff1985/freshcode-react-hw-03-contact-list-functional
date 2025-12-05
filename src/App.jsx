@@ -5,6 +5,7 @@ import api from './api/contactsService';
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
+import { func } from 'prop-types';
 
 function App() {
     const [contacts, setContacts] = useState([]);
@@ -58,13 +59,25 @@ function App() {
             .catch((err) => console.log(err));
     }
 
+    // function updateContact(contact) {
+    //     const newContacts = contacts.map((item) =>
+    //         item.id === contact.id ? contact : item
+    //     );
+    //     setContacts(newContacts);
+    //     saveToLocalStorage(newContacts);
+    //     setContactForEdit({ ...contact });
+    // }
+
     function updateContact(contact) {
-        const newContacts = contacts.map((item) =>
-            item.id === contact.id ? contact : item
-        );
-        setContacts(newContacts);
-        saveToLocalStorage(newContacts);
-        setContactForEdit({ ...contact });
+        api.put(`/${contact.id}`, contact)
+            .then(({ data }) => {
+                const newContacts = contacts.map((item) =>
+                    item.id === contact.id ? data : item
+                );
+                setContacts(newContacts);
+                setContactForEdit({ ...contact });
+            })
+            .catch((err) => console.log(err));
     }
 
     // function deleteContact(contactId) {
@@ -110,9 +123,9 @@ function App() {
         setContactForEdit({ ...contact });
     }
 
-    const saveToLocalStorage = (contacts) => {
-        localStorage.setItem('contacts', JSON.stringify(contacts));
-    };
+    // const saveToLocalStorage = (contacts) => {
+    //     localStorage.setItem('contacts', JSON.stringify(contacts));
+    // };
 
     return (
         <>
