@@ -67,16 +67,31 @@ function App() {
         setContactForEdit({ ...contact });
     }
 
+    // function deleteContact(contactId) {
+    //     const newContacts = contacts.filter(
+    //         (contact) => contact.id !== contactId
+    //     );
+    //     const isContactNowUpdating = contactForEdit.id === contactId;
+    //     setContacts(newContacts);
+    //     saveToLocalStorage(newContacts);
+    //     setContactForEdit(
+    //         isContactNowUpdating ? createEmptyContact() : contactForEdit
+    //     );
+    // }
+
     function deleteContact(contactId) {
-        const newContacts = contacts.filter(
-            (contact) => contact.id !== contactId
-        );
-        const isContactNowUpdating = contactForEdit.id === contactId;
-        setContacts(newContacts);
-        saveToLocalStorage(newContacts);
-        setContactForEdit(
-            isContactNowUpdating ? createEmptyContact() : contactForEdit
-        );
+        api.delete(`/${contactId}`)
+            .then(() => {
+                const newContacts = contacts.filter(
+                    (contact) => contact.id !== contactId
+                );
+                const isContactNowUpdating = contactForEdit.id === contactId;
+                setContacts(newContacts);
+                setContactForEdit(
+                    isContactNowUpdating ? createEmptyContact() : contactForEdit
+                );
+            })
+            .catch((err) => console.log(err));
     }
 
     function saveContact(contact) {
