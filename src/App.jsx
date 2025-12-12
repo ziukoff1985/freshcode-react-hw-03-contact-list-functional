@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
 
-import api from './api/contactsService';
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
@@ -9,17 +9,16 @@ function App() {
     const [contacts, setContacts] = useState([]);
     const [contactForEdit, setContactForEdit] = useState(createEmptyContact);
 
-    useEffect(() => {
-        api.get('/')
-            .then(({ data }) => {
-                if (!data) {
-                    setContacts([]);
-                } else {
-                    setContacts([...data]);
-                }
-            })
-            .catch((err) => console.log(err.message));
-    }, []);
+    useEffect(getDataFromLocalStorage, []);
+
+    function getDataFromLocalStorage() {
+        const savedData = JSON.parse(localStorage.getItem('contacts'));
+        if (!savedData) {
+            setContacts([]);
+        } else {
+            setContacts([...savedData]);
+        }
+    }
 
     function createEmptyContact() {
         return {
@@ -30,41 +29,16 @@ function App() {
         };
     }
 
-    function createContact(contact) {
-        api.post('/', contact)
-            .then(({ data }) => {
-                const newContacts = [...contacts, data];
-                setContacts(newContacts);
-                setContactForEdit(createEmptyContact);
-            })
-            .catch((err) => console.log(err.message));
-    }
-
-    function updateContact(contact) {
-        api.put(`/${contact.id}`, contact)
-            .then(({ data }) => {
-                const newContacts = contacts.map((item) =>
-                    item.id === contact.id ? data : item
-                );
-                setContacts(newContacts);
-                setContactForEdit({ ...contact });
-            })
-            .catch((err) => console.log(err.message));
-    }
-
     function deleteContact(contactId) {
-        api.delete(`/${contactId}`)
-            .then(() => {
-                const newContacts = contacts.filter(
-                    (contact) => contact.id !== contactId
-                );
-                const isContactNowUpdating = contactForEdit.id === contactId;
-                setContacts(newContacts);
-                setContactForEdit(
-                    isContactNowUpdating ? createEmptyContact() : contactForEdit
-                );
-            })
-            .catch((err) => console.log(err.message));
+        const newContacts = contacts.filter(
+            (contact) => contact.id !== contactId
+        );
+        const isContactNowUpdating = contactForEdit.id === contactId;
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
+        setContactForEdit(
+            isContactNowUpdating ? createEmptyContact() : contactForEdit
+        );
     }
 
     function saveContact(contact) {
@@ -82,6 +56,27 @@ function App() {
     function editContact(contact) {
         setContactForEdit({ ...contact });
     }
+
+    function createContact(contact) {
+        contact.id = nanoid();
+        const newContacts = [...contacts, contact];
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
+        setContactForEdit(createEmptyContact);
+    }
+
+    function updateContact(contact) {
+        const newContacts = contacts.map((item) =>
+            item.id === contact.id ? contact : item
+        );
+        setContacts(newContacts);
+        saveToLocalStorage(newContacts);
+        setContactForEdit({ ...contact });
+    }
+
+    const saveToLocalStorage = (contacts) => {
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+    };
 
     return (
         <>
